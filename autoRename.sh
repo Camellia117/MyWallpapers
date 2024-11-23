@@ -7,7 +7,6 @@ EXTENSIONS="png jpg"                     # Supported extensions
 BRANCH="master"                          # Target Git branch
 DATE=$(date +'%Y-%m-%d %H:%M:%S')
 
-LAST_COUNT_FILE="$HOME/Pictures/MyWallpapers/.last_image_count"
 # Function to rename files
 rename_files() {
 	echo "Renaming files in $TARGET_DIR..."
@@ -45,19 +44,8 @@ push_to_git() {
 	fi
 }
 
-check_for_new_images() {
-	current_count=$(find "$TARGET_DIR" -type f \( -iname "*.png" -o -iname "*.jpg" \) | wc -l)
-
-	# 如果新文件数量增加，执行重命名和 Git 操作
-	if [ "$current_count" -gt "$(cat $LAST_COUNT_FILE 2>/dev/null || echo 0)" ]; then
-		rename_files
-		push_to_git
-		echo "$current_count" >"$LAST_COUNT_FILE"
-	else
-		echo "没有检测到新的图片文件。"
-	fi
-}
-
-# 主执行流程
-echo "开始每次检查和更新..."
-check_for_new_images
+# Main script execution
+echo "Starting AutoRename process..."
+rename_files
+push_to_git
+echo "AutoRename process complete!"
