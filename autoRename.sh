@@ -3,7 +3,7 @@
 # Configuration
 TARGET_DIR="$HOME/Pictures/MyWallpapers" # Replace with your target directory
 GIT_DIR="$HOME/Pictures/MyWallpapers"    # Replace with your Git repo directory
-EXTENSIONS="png jpg"                     # Supported extensions
+EXTENSIONS="png"                         # Supported extensions
 BRANCH="master"                          # Target Git branch
 DATE=$(date +'%Y-%m-%d %H:%M:%S')
 
