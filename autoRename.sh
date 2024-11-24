@@ -10,8 +10,6 @@ DATE=$(date +'%Y-%m-%d %H:%M:%S')
 # Function to rename files
 rename_files() {
 	echo "Renaming files in $TARGET_DIR..."
-	#!/bin/bash
-	# 用于快速重命名全部文件
 
 	let i1=1
 	for file in $(ls | grep -v autoRename.sh | grep -v README); do
