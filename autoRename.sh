@@ -3,26 +3,25 @@
 # Configuration
 TARGET_DIR="$HOME/Pictures/MyWallpapers" # Replace with your target directory
 GIT_DIR="$HOME/Pictures/MyWallpapers"    # Replace with your Git repo directory
-EXTENSIONS="png jpg"                     # Supported extensions
+EXTENSIONS="png"                         # Supported extensions
 BRANCH="master"                          # Target Git branch
 DATE=$(date +'%Y-%m-%d %H:%M:%S')
 
-LAST_COUNT_FILE="$HOME/Pictures/MyWallpapers/.last_image_count"
 # Function to rename files
 rename_files() {
 	echo "Renaming files in $TARGET_DIR..."
-	count=1
-	for ext in $EXTENSIONS; do
-		for file in "$TARGET_DIR"/*.$ext; do
-			# Skip if no matching files exist
-			[ -e "$file" ] || continue
+	#!/bin/bash
+	# 用于快速重命名全部文件
 
-			# Get the new name with correct extension
-			new_name="${TARGET_DIR}/${count}.${ext}"
-			mv "$file" "$new_name"
-			echo "Renamed $file -> $new_name"
-			((count++))
-		done
+	let i1=1
+	for file in $(ls | grep -v autoRename.sh | grep -v README); do
+		[ -f $file ] && mv $file $(printf "%09d" $i1).png && let i1=i1+1
+	done
+
+	let i2=1
+
+	for file in $(ls -tr | grep -v autoRename.sh | grep -v README); do
+		[ -f $file ] && mv $file $(printf "%02d" $i2).png && let i2=i2+1
 	done
 }
 
@@ -45,19 +44,8 @@ push_to_git() {
 	fi
 }
 
-check_for_new_images() {
-	current_count=$(find "$TARGET_DIR" -type f \( -iname "*.png" -o -iname "*.jpg" \) | wc -l)
-
-	# 如果新文件数量增加，执行重命名和 Git 操作
-	if [ "$current_count" -gt "$(cat $LAST_COUNT_FILE 2>/dev/null || echo 0)" ]; then
-		rename_files
-		push_to_git
-		echo "$current_count" >"$LAST_COUNT_FILE"
-	else
-		echo "没有检测到新的图片文件。"
-	fi
-}
-
-# 主执行流程
-echo "开始每次检查和更新..."
-check_for_new_images
+# Main script execution
+echo "Starting AutoRename process..."
+rename_files
+push_to_git
+echo "AutoRename process complete!"
