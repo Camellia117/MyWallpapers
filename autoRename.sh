@@ -10,11 +10,6 @@ DATE=$(date +'%Y-%m-%d %H:%M:%S')
 # Function to rename files
 rename_files() {
 	echo "Renaming files in $TARGET_DIR..."
-<<<<<<< HEAD
-=======
-	#!/bin/bash
-	# 用于快速重命名全部文件
->>>>>>> 4804f37770aa75731785254340fd6ba18389502d
 
 	let i1=1
 	for file in $(ls | grep -v autoRename.sh | grep -v README); do
@@ -25,15 +20,12 @@ rename_files() {
 
 	for file in $(ls -tr | grep -v autoRename.sh | grep -v README); do
 		[ -f $file ] && mv $file $(printf "%02d" $i2).png && let i2=i2+1
-<<<<<<< HEAD
-=======
 	done
 
 	echo '## wallpapers' >README.md
 	for file in $(ls | grep -v autoRename.sh | grep -v README); do
 		echo "$file  " >>README.md
 		echo "![$file]($file)" >>README.md
->>>>>>> 4804f37770aa75731785254340fd6ba18389502d
 	done
 }
 
